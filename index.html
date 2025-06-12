@@ -2,6 +2,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jimmy's Handwriter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Shadows+Into+Light&family=Reenie+Beanie&family=Kalam&family=Gloria+Hallelujah&family=Handlee&family=Coming+Soon&family=Homemade+Apple&family=Rock+Salt&family=Schoolbell&family=Covered+By+Your+Grace&family=Just+Me+Again+Down+Here&family=Crafty+Girls&family=Architects+Daughter&family=Give+You+Glory&family=La+Belle+Aurore&family=Permanent+Marker&family=Special+Elite&family=Zeyada&display=swap" rel="stylesheet">
     <style>
         body {
@@ -14,10 +16,10 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            animation: bodyFade 1.5s ease-in-out;
-        }@keyframes bodyFade {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+            animation: fadeBody 1.5s ease-in-out;
+        }@keyframes fadeBody {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     header {
@@ -27,12 +29,12 @@
         font-weight: 700;
         text-align: center;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        animation: fadeSlideDown 1s ease-in-out;
+        animation: dropHeader 1s ease-in-out;
     }
 
-    @keyframes fadeSlideDown {
-        0% { opacity: 0; transform: translateY(-30px); }
-        100% { opacity: 1; transform: translateY(0); }
+    @keyframes dropHeader {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .container {
@@ -47,12 +49,12 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
-        animation: fadeScaleIn 1.5s ease;
+        animation: scaleIn 1.5s ease;
     }
 
-    @keyframes fadeScaleIn {
-        0% { opacity: 0; transform: scale(0.9); }
-        100% { opacity: 1; transform: scale(1); }
+    @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
     }
 
     textarea {
@@ -101,11 +103,19 @@
         transform: scale(0.97);
     }
 
+    .note-carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding: 20px 0;
+    }
+
     .note-paper {
         background: repeating-linear-gradient(white, white 28px, #c0c0c0 29px);
         padding: 60px 40px 40px 70px;
         min-height: 1122px;
-        width: 100%;
+        min-width: 794px;
         line-height: 29px;
         font-size: 20px;
         white-space: pre-wrap;
@@ -113,8 +123,8 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
-        margin-bottom: 30px;
-        animation: fadeSlideUp 1s ease-in-out;
+        scroll-snap-align: center;
+        transition: transform 0.5s ease;
     }
 
     .note-paper::before {
@@ -125,11 +135,6 @@
         width: 2px;
         height: 100%;
         background-color: red;
-    }
-
-    @keyframes fadeSlideUp {
-        0% { opacity: 0; transform: translateY(30px); }
-        100% { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
@@ -148,11 +153,21 @@
         .note-paper {
             padding: 40px 20px 20px 50px;
             font-size: 18px;
+            min-width: 90%;
         }
     }
 
     .note-paper, button, select, input {
         transition: all 0.3s ease-in-out;
+    }
+
+    .download-btn {
+        background-color: #007BFF;
+    }
+
+    .download-btn:hover {
+        background-color: #0062CC;
+        transform: scale(1.05);
     }
 </style>
 
@@ -183,9 +198,10 @@
 
     <input type="color" id="colorPicker" value="#000000">
     <button onclick="generateNote()">Generate Handwritten Note</button>
+    <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
 </div>
 
-<div id="noteArea"></div>
+<div class="note-carousel" id="noteArea"></div>
 
 </div><script>
     function generateNote() {
@@ -217,5 +233,21 @@
                 lineCount = 0;
             }
         });
+    }
+
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const pages = document.querySelectorAll('.note-paper');
+
+        for (let i = 0; i < pages.length; i++) {
+            const canvas = await html2canvas(pages[i]);
+            const imgData = canvas.toDataURL('image/png');
+
+            if (i > 0) pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 20, 20, 555, 780);
+        }
+
+        pdf.save('Jimmy_Handwritten_Notes.pdf');
     }
 </script></body></html>
