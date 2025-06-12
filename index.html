@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jimmy's Handwriter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jimmy's Handwriter</h1>
+        <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+        <div class="options">
+            <label>Font:
+                <select id="fontSelect">
+                    <option value="'Patrick Hand', cursive">Patrick Hand</option>
+                    <option value="'Caveat', cursive">Caveat</option>
+                    <option value="'Indie Flower', cursive">Indie Flower</option>
+                </select>
+            </label>
+
+            <label>Pen Color:
+                <input type="color" id="colorPicker" value="#000000">
+            </label>
+        </div>
+        <button onclick="generateNotes()">Generate Notes</button>
+
+        <div id="notePages" class="note-paper"></div>
+
+        <div class="page-controls">
+            <button onclick="prevPage()">Previous</button>
+            <span id="pageNumber">Page 1</span>
+            <button onclick="nextPage()">Next</button>
+        </div>
+
+        <button onclick="downloadPDF()">Download as PDF</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>
