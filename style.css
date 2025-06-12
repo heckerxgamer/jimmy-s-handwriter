@@ -1,0 +1,98 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Shadows+Into+Light&family=Reenie+Beanie&family=Kalam&family=Gloria+Hallelujah&family=Handlee&family=Coming+Soon&family=Homemade+Apple&family=Rock+Salt&family=Schoolbell&family=Covered+By+Your+Grace&family=Just+Me+Again+Down+Here&family=Crafty+Girls&family=Architects+Daughter&family=Give+You+Glory&family=La+Belle+Aurore&family=Permanent+Marker&family=Special+Elite&family=Zeyada&display=swap');
+
+body {
+    font-family: 'Patrick Hand', cursive;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    font-size: 3rem;
+    margin: 20px;
+    text-align: center;
+    color: #333;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+.container {
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+select, input[type=color], button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.download-btn {
+    background-color: #007BFF;
+    color: white;
+}
+
+.swiper {
+    width: 90%;
+    max-width: 700px;
+    height: 100%;
+    margin-bottom: 50px;
+}
+
+.swiper-slide {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-image: linear-gradient(#eaeaea 1px, transparent 1px);
+    background-size: 100% 24px;
+    white-space: pre-wrap;
+    font-family: 'Patrick Hand', cursive;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
