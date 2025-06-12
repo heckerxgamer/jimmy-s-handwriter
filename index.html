@@ -1,253 +1,59 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jimmy's Handwriter</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Shadows+Into+Light&family=Reenie+Beanie&family=Kalam&family=Gloria+Hallelujah&family=Handlee&family=Coming+Soon&family=Homemade+Apple&family=Rock+Salt&family=Schoolbell&family=Covered+By+Your+Grace&family=Just+Me+Again+Down+Here&family=Crafty+Girls&family=Architects+Daughter&family=Give+You+Glory&family=La+Belle+Aurore&family=Permanent+Marker&family=Special+Elite&family=Zeyada&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Patrick Hand', cursive;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #f8f9fa, #e0e0e0);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            animation: fadeBody 1.5s ease-in-out;
-        }@keyframes fadeBody {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+</head>
 
-    header {
-        font-size: 3rem;
-        margin: 30px 0;
-        color: #333;
-        font-weight: 700;
-        text-align: center;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        animation: dropHeader 1s ease-in-out;
-    }
+<body>
+    <header>Jimmy's Handwriter</header>
 
-    @keyframes dropHeader {
-        from { opacity: 0; transform: translateY(-30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    <div class="container">
+        <textarea id="inputText" placeholder="Paste your text here..."></textarea>
 
-    .container {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        width: 90%;
-        max-width: 850px;
-        margin: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        animation: scaleIn 1.5s ease;
-    }
+        <div class="controls">
+            <select id="fontSelect">
+                <option value="Indie Flower">Indie Flower</option>
+                <option value="Patrick Hand">Patrick Hand</option>
+                <option value="Shadows Into Light">Shadows Into Light</option>
+                <option value="Reenie Beanie">Reenie Beanie</option>
+                <option value="Kalam">Kalam</option>
+                <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                <option value="Handlee">Handlee</option>
+                <option value="Coming Soon">Coming Soon</option>
+                <option value="Homemade Apple">Homemade Apple</option>
+                <option value="Rock Salt">Rock Salt</option>
+                <option value="Schoolbell">Schoolbell</option>
+                <option value="Covered By Your Grace">Covered By Your Grace</option>
+                <option value="Just Me Again Down Here">Just Me Again Down Here</option>
+                <option value="Crafty Girls">Crafty Girls</option>
+                <option value="Architects Daughter">Architects Daughter</option>
+                <option value="Give You Glory">Give You Glory</option>
+                <option value="La Belle Aurore">La Belle Aurore</option>
+                <option value="Permanent Marker">Permanent Marker</option>
+                <option value="Special Elite">Special Elite</option>
+                <option value="Zeyada">Zeyada</option>
+            </select>
 
-    @keyframes scaleIn {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-    }
+            <input type="color" id="colorPicker" value="#000000">
+            <button id="generateBtn">Generate Pages</button>
+            <button id="downloadBtn" class="download-btn">Download PDF</button>
+        </div>
+    </div>
 
-    textarea {
-        width: 100%;
-        min-height: 150px;
-        padding: 15px;
-        font-size: 16px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        resize: vertical;
-        outline: none;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-    }
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="pagesContainer">
+            <!-- Pages will be generated here -->
+        </div>
+    </div>
 
-    textarea:focus {
-        box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
-    }
+    <script src="swiper/swiper-bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
 
-    select, input[type="color"], button {
-        margin: 8px 4px;
-        padding: 10px 16px;
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        font-size: 16px;
-        transition: all 0.3s ease-in-out;
-    }
-
-    button {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    button:hover {
-        background-color: #45a049;
-        transform: scale(1.05);
-    }
-
-    select:hover, input[type="color"]:hover {
-        transform: scale(1.03);
-    }
-
-    button:active {
-        transform: scale(0.97);
-    }
-
-    .note-carousel {
-        display: flex;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        gap: 20px;
-        padding: 20px 0;
-    }
-
-    .note-paper {
-        background: repeating-linear-gradient(white, white 28px, #c0c0c0 29px);
-        padding: 60px 40px 40px 70px;
-        min-height: 1122px;
-        min-width: 794px;
-        line-height: 29px;
-        font-size: 20px;
-        white-space: pre-wrap;
-        border-radius: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-        scroll-snap-align: center;
-        transition: transform 0.5s ease;
-    }
-
-    .note-paper::before {
-        content: '';
-        position: absolute;
-        left: 50px;
-        top: 0;
-        width: 2px;
-        height: 100%;
-        background-color: red;
-    }
-
-    @media (max-width: 768px) {
-        header {
-            font-size: 2rem;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        textarea {
-            min-height: 120px;
-        }
-
-        .note-paper {
-            padding: 40px 20px 20px 50px;
-            font-size: 18px;
-            min-width: 90%;
-        }
-    }
-
-    .note-paper, button, select, input {
-        transition: all 0.3s ease-in-out;
-    }
-
-    .download-btn {
-        background-color: #007BFF;
-    }
-
-    .download-btn:hover {
-        background-color: #0062CC;
-        transform: scale(1.05);
-    }
-</style>
-
-</head><body><header>Jimmy's Handwriter</header><div class="container">
-    <textarea id="inputText" placeholder="Paste your text here..."></textarea><div>
-    <select id="fontSelect">
-        <option value="'Indie Flower', cursive">Indie Flower</option>
-        <option value="'Patrick Hand', cursive">Patrick Hand</option>
-        <option value="'Shadows Into Light', cursive">Shadows Into Light</option>
-        <option value="'Reenie Beanie', cursive">Reenie Beanie</option>
-        <option value="'Kalam', cursive">Kalam</option>
-        <option value="'Gloria Hallelujah', cursive">Gloria Hallelujah</option>
-        <option value="'Handlee', cursive">Handlee</option>
-        <option value="'Coming Soon', cursive">Coming Soon</option>
-        <option value="'Homemade Apple', cursive">Homemade Apple</option>
-        <option value="'Rock Salt', cursive">Rock Salt</option>
-        <option value="'Schoolbell', cursive">Schoolbell</option>
-        <option value="'Covered By Your Grace', cursive">Covered By Your Grace</option>
-        <option value="'Just Me Again Down Here', cursive">Just Me Again Down Here</option>
-        <option value="'Crafty Girls', cursive">Crafty Girls</option>
-        <option value="'Architects Daughter', cursive">Architects Daughter</option>
-        <option value="'Give You Glory', cursive">Give You Glory</option>
-        <option value="'La Belle Aurore', cursive">La Belle Aurore</option>
-        <option value="'Permanent Marker', cursive">Permanent Marker</option>
-        <option value="'Special Elite', cursive">Special Elite</option>
-        <option value="'Zeyada', cursive">Zeyada</option>
-    </select>
-
-    <input type="color" id="colorPicker" value="#000000">
-    <button onclick="generateNote()">Generate Handwritten Note</button>
-    <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
-</div>
-
-<div class="note-carousel" id="noteArea"></div>
-
-</div><script>
-    function generateNote() {
-        const inputText = document.getElementById('inputText').value;
-        const font = document.getElementById('fontSelect').value;
-        const color = document.getElementById('colorPicker').value;
-
-        const noteArea = document.getElementById('noteArea');
-        noteArea.innerHTML = '';
-
-        const linesPerPage = 35;
-        const lines = inputText.split('\n');
-        let pageContent = '';
-        let lineCount = 0;
-
-        lines.forEach((line, index) => {
-            pageContent += line + '\n';
-            lineCount++;
-
-            if (lineCount === linesPerPage || index === lines.length - 1) {
-                const notePage = document.createElement('div');
-                notePage.className = 'note-paper';
-                notePage.style.fontFamily = font;
-                notePage.style.color = color;
-                notePage.textContent = pageContent.trim();
-                noteArea.appendChild(notePage);
-
-                pageContent = '';
-                lineCount = 0;
-            }
-        });
-    }
-
-    async function downloadPDF() {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'pt', 'a4');
-        const pages = document.querySelectorAll('.note-paper');
-
-        for (let i = 0; i < pages.length; i++) {
-            const canvas = await html2canvas(pages[i]);
-            const imgData = canvas.toDataURL('image/png');
-
-            if (i > 0) pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 20, 20, 555, 780);
-        }
-
-        pdf.save('Jimmy_Handwritten_Notes.pdf');
-    }
-</script></body></html>
+</html>
